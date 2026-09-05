@@ -72,9 +72,9 @@ Each project added one independent layer of protection. No single layer is suffi
 
 ## 🧩 Project-by-Project Breakdown
   
-   Project 1 — Mapping the Hydroficient IoT System & Identifying Security Risks
+  ##  Project 1 — Mapping the Hydroficient IoT System & Identifying Security Risks
 
-Threat modeling before writing a single line of code.
+**Threat modeling before writing a single line of code.**
 
 • Mapped the complete IoT device-to-cloud architecture and identified critical assets across the HYDROLOGIC devices, cloud API, remote controls, and operator dashboard.
 
@@ -85,6 +85,33 @@ Threat modeling before writing a single line of code.
 • Built a STRIDE threat model covering Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, and Elevation of Privilege.
 
 • Deliverable: A professional threat model documenting the system architecture, attack surface, threats, and key security risks.
+
+---
+
+## Project 2 — Learn Python Basics to Work With Sensor Data
+
+**Building the language skills needed to simulate a real IoT device.**
+
+* **Python fundamentals:** data structures, control flow, and functions
+* Working with **JSON** and **nested JSON** using Pandas
+* Data cleaning and preparation concepts
+* Built a `WaterSensor` class — a **mock sensor log generator** that simulates realistic pressure/flow readings, including timestamps and sequence counters, laying the groundwork for replay-attack defenses later in the project
+
+---
+
+## Project 3 — Build a Fake Sensor & Send Data in an Insecure Way
+
+**Standing up the real pipeline — then attacking it.**
+
+* Installed and configured **Mosquitto** (MQTT broker) and the **paho-mqtt** Python library
+* Learned MQTT fundamentals: topics, QoS levels, and publish/subscribe message flow
+* Designed the full MQTT topic hierarchy for The Grand Marina:
+  `hydroficient/grandmarina/sensors/...`
+  `hydroficient/grandmarina/commands/...`
+  `hydroficient/grandmarina/alerts/...`
+  `hydroficient/grandmarina/status/...`
+* Built `sensor_publisher.py` and `dashboard_subscriber.py` — a working three-terminal pipeline: **sensor → broker → live dashboard**
+* **The uncomfortable experiment:** opened a fourth terminal, subscribed with zero authentication, and watched every device ID, pressure reading, and timestamp scroll past in plain text — demonstrating the exact vulnerability an attacker could exploit
 
 
 ## 📊 Outcome
