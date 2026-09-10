@@ -113,6 +113,18 @@ Each project added one independent layer of protection. No single layer is suffi
 * Built `sensor_publisher.py` and `dashboard_subscriber.py` — a working three-terminal pipeline: **sensor → broker → live dashboard**
 * **The uncomfortable experiment:** opened a fourth terminal, subscribed with zero authentication, and watched every device ID, pressure reading, and timestamp scroll past in plain text — demonstrating the exact vulnerability an attacker could exploit
 
+---
+
+## Project 4 — Add Encryption & Test How It Affects Performance
+
+**Closing the confidentiality gap with TLS.**
+
+- Learned how **TLS and digital certificates** work, including why HTTPS matters and what a Certificate Authority (CA) does
+- Wrote `generate_certs.py` to create a private **Certificate Authority** and issue a server certificate for the Mosquitto broker
+- Configured **Mosquitto for TLS** and updated the Python MQTT client accordingly
+- Ran four controlled experiments — **Speed Test, Stress Test, Eavesdropper Test, and Certificate Test** — comparing TLS vs. no-TLS under normal, moderate-load, and emergency-mode conditions
+- **Deliverable:** A professional **Security Assessment Report** quantifying encryption overhead with real experimental evidence
+
 
 ## 📊 Outcome
 The Grand Marina passed its insurance audit on the first attempt in three years — the auditor specifically called the live dashboard "the clearest security posture view she's reviewed at a property this size"
