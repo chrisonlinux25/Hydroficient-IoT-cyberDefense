@@ -1,6 +1,14 @@
 # Hydroficient-IoT-cyberDefense
 IoT Cybersecurity; Building IoT water defense Pipeline.
 
+# An 8-Week IoT Security Externship — Securing the Grand Marina Hotel's Water Infrastructure
+
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=flat-square)
+![Duration](https://img.shields.io/badge/Duration-8%20Weeks-blue?style=flat-square)
+![Role](https://img.shields.io/badge/Role-Junior%20Security%20Engineer-orange?style=flat-square)
+![Stack](https://img.shields.io/badge/Stack-Python%20%7C%20MQTT%20%7C%20TLS%2FmTLS%20%7C%20AI-informational?style=flat-square)
+![Outcome](https://img.shields.io/badge/Outcome-Passed%20Insurance%20Audit-success?style=flat-square)
+
 ## 📖 Overview
 This repository documents an 8-week hands-on cybersecurity externship at Hydroficient, a company specializing in IoT-based water management systems for commercial properties.
 
@@ -125,6 +133,22 @@ Each project added one independent layer of protection. No single layer is suffi
 - Ran four controlled experiments — **Speed Test, Stress Test, Eavesdropper Test, and Certificate Test** — comparing TLS vs. no-TLS under normal, moderate-load, and emergency-mode conditions
 - **Deliverable:** A professional **Security Assessment Report** quantifying encryption overhead with real experimental evidence
 
+---
+
+## Project 5 — Control Which Devices Are Allowed to Connect
+
+**Closing the device identity gap with Mutual TLS (mTLS).**
+
+- Learned the difference between **one-way TLS**, where only the server proves its identity, and **mutual TLS (mTLS)**, where both the server and client authenticate each other.
+- Identified the security gap in one-way TLS: a rogue device with network access and the public CA certificate could connect to the broker because the client itself was not authenticated.
+- Generated a unique client certificate for each of the three **HYDROLOGIC** devices and configured Mosquitto to require valid client certificates.
+- Verified that legitimate devices could connect successfully while unauthorized devices without valid certificates were rejected.
+- Tested different certificate scenarios, including **valid certificates, missing certificates, expired certificates, and certificates signed by the wrong CA**, and documented the results.
+- Evaluated the performance impact of mTLS and confirmed that the added authentication introduced **negligible latency** in the tested environment.
+- **Deliverable:** Created a **Device Provisioning Policy** covering device onboarding, certificate management, device retirement, and response to compromised devices.
+
+  ---
+  
 
 ## 📊 Outcome
 The Grand Marina passed its insurance audit on the first attempt in three years — the auditor specifically called the live dashboard "the clearest security posture view she's reviewed at a property this size"
