@@ -1,0 +1,87 @@
+[
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-09-24T09:21:47.574025Z",
+      "readings": {
+        "pressure_upstream": 61.98,
+        "pressure_downstream": 57.51,
+        "flow_rate": 49.0,
+        "gate_a_position": 44.9,
+        "gate_b_position": 44.2
+      },
+      "status": "operational"
+    },
+    "captured_at": "2026-09-24T09:21:47.575369Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-09-24T09:21:47.574025Z\",\n  \"readings\": {\n    \"pressure_upstream\": 61.98,\n    \"pressure_downstream\": 57.51,\n    \"flow_rate\": 49.0,\n    \"gate_a_position\": 44.9,\n    \"gate_b_position\": 44.2\n  },\n  \"status\": \"operational\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-09-24T09:21:52.576917Z",
+      "readings": {
+        "pressure_upstream": 59.49,
+        "pressure_downstream": 55.38,
+        "flow_rate": 52.02,
+        "gate_a_position": 45.8,
+        "gate_b_position": 43.4
+      },
+      "status": "operational"
+    },
+    "captured_at": "2026-09-24T09:21:52.578170Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-09-24T09:21:52.576917Z\",\n  \"readings\": {\n    \"pressure_upstream\": 59.49,\n    \"pressure_downstream\": 55.38,\n    \"flow_rate\": 52.02,\n    \"gate_a_position\": 45.8,\n    \"gate_b_position\": 43.4\n  },\n  \"status\": \"operational\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-09-24T09:21:57.581895Z",
+      "readings": {
+        "pressure_upstream": 58.48,
+        "pressure_downstream": 54.9,
+        "flow_rate": 46.83,
+        "gate_a_position": 43.1,
+        "gate_b_position": 47.4
+      },
+      "status": "operational"
+    },
+    "captured_at": "2026-09-24T09:21:57.583175Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-09-24T09:21:57.581895Z\",\n  \"readings\": {\n    \"pressure_upstream\": 58.48,\n    \"pressure_downstream\": 54.9,\n    \"flow_rate\": 46.83,\n    \"gate_a_position\": 43.1,\n    \"gate_b_position\": 47.4\n  },\n  \"status\": \"operational\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-09-24T09:22:02.586639Z",
+      "readings": {
+        "pressure_upstream": 61.85,
+        "pressure_downstream": 56.54,
+        "flow_rate": 45.88,
+        "gate_a_position": 47.2,
+        "gate_b_position": 43.4
+      },
+      "status": "operational"
+    },
+    "captured_at": "2026-09-24T09:22:02.589701Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-09-24T09:22:02.586639Z\",\n  \"readings\": {\n    \"pressure_upstream\": 61.85,\n    \"pressure_downstream\": 56.54,\n    \"flow_rate\": 45.88,\n    \"gate_a_position\": 47.2,\n    \"gate_b_position\": 43.4\n  },\n  \"status\": \"operational\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-09-24T09:22:07.591047Z",
+      "readings": {
+        "pressure_upstream": 58.04,
+        "pressure_downstream": 55.7,
+        "flow_rate": 46.81,
+        "gate_a_position": 45.1,
+        "gate_b_position": 45.3
+      },
+      "status": "operational"
+    },
+    "captured_at": "2026-09-24T09:22:07.592588Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-09-24T09:22:07.591047Z\",\n  \"readings\": {\n    \"pressure_upstream\": 58.04,\n    \"pressure_downstream\": 55.7,\n    \"flow_rate\": 46.81,\n    \"gate_a_position\": 45.1,\n    \"gate_b_position\": 45.3\n  },\n  \"status\": \"operational\"\n}"
+  }
+]
