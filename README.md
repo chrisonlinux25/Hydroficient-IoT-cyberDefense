@@ -146,9 +146,50 @@ Each project added one independent layer of protection. No single layer is suffi
 - Tested different certificate scenarios, including **valid certificates, missing certificates, expired certificates, and certificates signed by the wrong CA**, and documented the results.
 - Evaluated the performance impact of mTLS and confirmed that the added authentication introduced **negligible latency** in the tested environment.
 - **Deliverable:** Created a **Device Provisioning Policy** covering device onboarding, certificate management, device retirement, and response to compromised devices.
+---
 
-  ---
-  
+### Project 6 — Simulate an Attack That Replays Old Commands
+
+  **Closing the message integrity and freshness gap with layered replay defenses.**
+
+- Proved the replay vulnerability first: captured legitimate, encrypted MQTT messages and replayed them later — the subscriber accepted all replayed messages without detecting that they were stale or previously received
+- Implemented and compared **three independent replay defenses**, each addressing a different weakness:
+
+| **Defense** | **Catches** | **Misses** |
+| ------------------------------------- | ----------------------------- | ---------------------------------------------------- |
+| **Timestamp validation** (30-second window) | Stale and delayed replays | Immediate replays within the allowed time window |
+| **Sequence counter** | Exact and delayed replays | Modified replays using a new sequence number |
+| **HMAC-SHA256 signing** | Tampered or modified messages | Byte-for-byte identical replays |
+
+- Built `publisher_defended.py` and `subscriber_defended.py`, combining timestamp validation, sequence tracking, and HMAC-SHA256 message authentication
+- Ran a **Defense Comparison** experiment to demonstrate the strengths and limitations of each control individually and verify that the combination provides layered protection against the tested replay and tampering scenarios
+
+ ---
+
+### Project 7 — Build a Dashboard That Monitors Threats in Real Time
+
+  **Making the security status visible to a non-technical operator.**
+
+- Learned why real-time security visibility matters — terminal logs are not practical for a GM monitoring the hotel water system remotely
+- Built a **4-component live architecture**: `dashboard.html` (the interface), `dashboard_server.py` (HTTP + WebSocket bridge), `subscriber_dashboard.py` (Project 6 validation logic with live event reporting), and the unchanged `publisher_defended.py`
+- Used **WebSockets** instead of polling so security events are pushed to the dashboard immediately, achieving publish-to-browser latency of under 1 second during testing
+- Built `attack_simulator.py` to demonstrate live attack scenarios: the dashboard displays normal traffic for valid messages and switches to an **"ATTACK DETECTED"** state when forged, replayed, or stale messages are rejected
+- Customized the dashboard interface and created a **capstone presentation** summarizing the security work completed across Weeks 1–7
+
+ ---
+
+### Project 8 (Bonus) — Use AI to Spot Unusual Patterns in Sensor Data
+
+   **Closing the blind spot that rule-based defenses cannot detect.**
+
+- Investigated a scenario where pressure readings gradually drift from **59 → 61 → 63 → 66 PSI** over six hours. Every message still has a valid HMAC, fresh timestamp, and correct sequence number, so all Project 6 security checks pass — yet the gradual change may indicate an abnormal condition such as a developing leak
+- Learned why deterministic controls such as **HMAC, timestamp validation, and sequence tracking** are binary security checks and cannot identify gradual behavioral changes or unusual combinations of otherwise valid sensor data
+- Learned **Isolation Forest**, an unsupervised anomaly detection algorithm that identifies observations that are easier to isolate from the rest of the dataset
+- Ran experiments in **Google Colab**, including baseline model training, **Isolation Forest vs. Local Outlier Factor (LOF)** comparison, and hyperparameter experiments
+- Integrated the trained model into the live dashboard, adding a **fourth, probabilistic detection layer** on top of the three deterministic defenses from Project 6
+- Updated the final presentation to include the AI-based anomaly detection layer
+
+---
 
 ## 📊 Outcome
 The Grand Marina passed its insurance audit on the first attempt in three years — the auditor specifically called the live dashboard "the clearest security posture view she's reviewed at a property this size"
