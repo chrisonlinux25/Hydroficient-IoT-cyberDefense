@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Grand Marina Hotel - Water Monitoring System </title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* =====================================================
+           CUSTOMIZABLE COLORS
+           Change these CSS variables to restyle the dashboard.
+           Try different hex colors to make it your own!
+           ===================================================== */
+    :root {
+    --bg-primary: #EAF8FF;
+    --bg-secondary: #DDF3FF;
+    --bg-card: rgba(255, 255, 255, 0.55);
+
+    --accent-cyan: #0891B2;
+    --accent-blue: #4F46E5;
+    --accent-green: #059669;
+    --accent-red: #DC2626;
+    --accent-orange: #EA580C;
+
+    --text-primary: #172554;
+    --text-secondary: rgba(23, 37, 84, 0.75);
+    --text-dim: rgba(23, 37, 84, 0.5);
+
+    --border-glow: rgba(8, 145, 178, 0.35);
+}
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+
+         .header {
+           background: rgba(255, 255, 255, 0.65);
+           backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+           border-bottom: 1px solid rgba(8, 145, 178, 0.2);
+           box-shadow: 0 4px 20px rgba(8, 145, 178, 0.08);
+           padding: 1.5rem 2rem;
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+       }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+           width: 50px;
+           height: 50px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           overflow: hidden;
+           border-radius: 12px;
+        }
+
+       .logo-icon img {
+          width: 50px;
+          height: 50px;
+           object-fit: contain;
+       }
+  
+         .logo-icon img {
+           width: 50px;
+           height: 50px;
+           object-fit: contain;
+         }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            border-radius: 20px;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .timestamp {
+            color: var(--text-secondary);
+            font-family: 'Consolas', monospace;
+        }
+
+        /* Main Container */
+        .container {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Maya Section */
+        .maya-section {
+          background: var(--bg-card);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid rgba(255, 255, 255, 0.7);
+          border-radius: 16px;
+          padding: 1.5rem;
+          margin-bottom: 2rem;
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          box-shadow:
+          0 8px 32px rgba(8, 145, 178, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+
+        .maya-avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .maya-speech { flex: 1; }
+
+        .maya-name {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .maya-message {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           ZONE CARDS
+           Each card shows live sensor data for one hotel zone.
+           You can add, remove, or rename zones here.
+           ===================================================== */
+        .sensors-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+      .sensor-card {
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(14px);
+       -webkit-backdrop-filter: blur(14px);
+
+       border: 1px solid rgba(255, 255, 255, 0.7);
+       border-radius: 18px;
+
+      padding: 1.5rem;
+
+       box-shadow:
+         0 8px 32px rgba(8, 145, 178, 0.10),
+         inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+         transition: all 0.3s ease;
+         position: relative;
+         overflow: hidden;
+      }
+
+        .sensor-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+        }
+        .sensor-card:hover {
+          transform: translateY(-5px);
+          box-shadow:
+          0 12px 40px rgba(8, 145, 178, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .sensor-card.attack-active {
+            border-color: var(--accent-red);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .sensor-card.attack-active::before {
+            background: var(--accent-red);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        @keyframes waterGlow {
+          0% {
+            box-shadow:
+              0 8px 32px rgba(8, 145, 178, 0.10),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+           }
+
+          50% {
+            box-shadow:
+              0 0 25px rgba(8, 145, 178, 0.35),
+             0 8px 32px rgba(8, 145, 178, 0.15);
+         }
+
+    100% {
+        box-shadow:
+            0 8px 32px rgba(8, 145, 178, 0.10),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+}
+
+       .sensor-card.updating {
+          animation: waterGlow 0.3s ease-in-out;
+        }
+
+        .sensor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .sensor-icon { font-size: 1.8rem; }
+        .sensor-title { font-size: 1.1rem; font-weight: 600; }
+
+        .sensor-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--text-dim);
+        }
+
+        .status-dot.online {
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        .sensor-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-family: 'Consolas', monospace;
+            color: var(--accent-cyan);
+            transition: all 0.3s ease;
+        }
+
+        .metric-value.updating {
+            color: var(--accent-green);
+            text-shadow: 0 0 10px var(--accent-green);
+        }
+
+        .pressure-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .pressure-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .pressure-fill.high {
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
+        }
+
+        /* Security Section */
+        .security-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .security-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .security-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .security-normal { color: var(--accent-green); }
+        .security-alert  { color: var(--accent-red); }
+
+        .security-status-text {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Attack Alert */
+        .attack-alert {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid var(--accent-red);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .attack-alert.visible { display: block; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .attack-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--accent-red);
+            margin-bottom: 0.75rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .attack-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .attack-details span { display: block; margin-bottom: 0.25rem; }
+
+        .attack-status {
+            margin-top: 0.75rem;
+            padding: 0.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 6px;
+            color: var(--accent-green);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Event Log */
+        .event-log {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .event-log::-webkit-scrollbar { width: 6px; }
+        .event-log::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        .event-log::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 3px;
+        }
+
+        .event-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .event-item:last-child { border-bottom: none; }
+        .event-icon { font-size: 1.2rem; }
+
+        .event-time {
+            color: var(--text-dim);
+            font-family: 'Consolas', monospace;
+            font-size: 0.8rem;
+        }
+
+        .event-message {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .event-item.attack .event-message { color: var(--accent-red); }
+        .event-item.valid  .event-message { color: var(--accent-green); }
+
+        /* Stats Footer */
+        .stats-footer {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .stat-item { text-align: center; }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Consolas', monospace;
+        }
+
+        .stat-value.green { color: var(--accent-green); }
+        .stat-value.red   { color: var(--accent-red); }
+        .stat-value.cyan  { color: var(--accent-cyan); }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .fa-float {
+            color: #74C0FC;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+           0%, 100% {
+           transform: translateY(0);
+        }
+        50% {
+           transform: translateY(-5px);
+        }
+      }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .sensors-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .sensors-grid { grid-template-columns: 1fr; }
+            .security-section { grid-template-columns: 1fr; }
+        }
+        .fa-beat-slow {
+             animation: fa-beat-slow 2.5s ease-in-out infinite;
+        }
+
+        @keyframes fa-beat-slow {
+            0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+        transform: scale(1.12);
+       }
+       
+     }
+      .fa-spin-slow {
+         animation-duration: 4s;
+     }
+     .attack-header i {
+    color: #e74c3c;
+     }
+
+    .attack-status i {
+    color: #22c55e;
+      }
+      /* ===== LIVE PRESSURE GAUGE ===== */
+
+.pressure-gauge {
+    width: 220px;
+    height: 145px;
+    margin: 0.5rem auto 1.2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.pressure-gauge-title {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* Gauge semicircle */
+.gauge {
+    width: 190px;
+    height: 95px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Colored gauge background */
+.gauge-arc {
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+
+    background: conic-gradient(
+        from 270deg,
+        #3b82f6 0deg,
+        #3b82f6 67.5deg,
+        #22c55e 67.5deg,
+        #22c55e 146.25deg,
+        #ef4444 146.25deg,
+        #ef4444 180deg,
+        transparent 180deg
+    );
+
+    /* Cut out the middle */
+    -webkit-mask: radial-gradient(
+        circle,
+        transparent 0 68%,
+        #000 69% 76%,
+        transparent 77%
+    );
+    mask: radial-gradient(
+        circle,
+        transparent 0 68%,
+        #000 69% 76%,
+        transparent 77%
+    );
+}
+
+/* Gauge tick marks */
+.gauge-ticks {
+    position: absolute;
+    width: 190px;
+    height: 95px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.gauge-tick {
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    background: var(--text-secondary);
+    left: 50%;
+    bottom: 0;
+    transform-origin: 50% 95px;
+}
+
+/* Needle */
+.gauge-needle {
+    position: absolute;
+    width: 3px;
+    height: 72px;
+    background: var(--text-primary);
+    left: 50%;
+    bottom: 0;
+    transform-origin: 50% 100%;
+    transform: translateX(-50%) rotate(-90deg);
+    border-radius: 3px;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 5;
+}
+
+.gauge-needle::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    left: 50%;
+    bottom: -5px;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(8, 145, 178, 0.6);
+}
+
+/* Center pressure value */
+.gauge-value {
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 6;
+}
+
+.gauge-value-number {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.gauge-value-unit {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    margin-top: 3px;
+}
+
+/* Gauge labels */
+.gauge-label {
+    position: absolute;
+    bottom: -2px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.gauge-label.low {
+    left: 8px;
+}
+
+.gauge-label.normal {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.gauge-label.high {
+    right: 8px;
+}
+
+/* Numeric scale */
+.gauge-scale {
+    position: absolute;
+    width: 190px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.gauge-scale .range {
+    white-space: nowrap;
+}
+
+.gauge-scale .zero {
+    position: absolute;
+    left: 0;
+}
+
+.gauge-scale .thirty {
+    position: absolute;
+    left: 37.5%;
+    transform: translateX(-50%);
+}
+
+.gauge-scale .sixty-five {
+    position: absolute;
+    left: 81.25%;
+    transform: translateX(-50%);
+}
+
+.gauge-scale .eighty {
+    position: absolute;
+    right: 0;
+}
+
+/* Status text */
+.gauge-status {
+    text-align: center;
+    margin-top: 0.2rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.gauge-status.low {
+    color: #3b82f6;
+}
+
+.gauge-status.normal {
+    color: #22c55e;
+}
+
+.gauge-status.high {
+    color: #ef4444;
+}
+    </style>
+</head>
+<body>
+    <!-- =====================================================
+         HEADER
+         Change the title and subtitle below to customize.
+         ===================================================== -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo-icon"> 
+                 <img src="img/logo.png" alt="Hydroficient Logo">
+            </div>
+            <div class="header-title">
+                <h1>Aegis Shield-SIEM Dashboard</h1>
+                <p>Water Monitoring System | Powered by Hydroficient</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span>LIVE Monitoring</span>
+            </div>
+            <div class="timestamp" id="current-time">--:--:--</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Maya Introduction -->
+        <div class="maya-section">
+            <div class="maya-avatar">  <i class="fa-solid fa-user-shield"></i> </div>
+            <div class="maya-speech">
+                <div class="maya-name"> Christine Khayat , Junior Security Engineer</div>
+                <div class="maya-message">
+                    "Welcome to the security monitoring dashboard. 
+                    I monitor the hotel’s water system in real time, tracking sensor data and security events. 
+                    Every message is verified before it reaches this screen."
+                </div>
+            </div>
+        </div>
+
+        <!-- =====================================================
+             ZONE CARDS
+             Each card tracks one area of the hotel.
+             To rename a zone, change the title and the IDs below.
+             ===================================================== -->
+        <div class="sensors-grid">
+            <!-- Main Building -->
+            <div class="sensor-card" id="card-main_building">
+                <div class="sensor-header">
+                    <div>
+                        <div class="sensor-icon">  <i class="fa-regular fa-building" style="color: rgb(116, 192, 252);"></i></div>
+                       
+                        <div class="sensor-title">MAIN BUILDING</div>
+                    </div>
+                    <div class="sensor-status">
+                        <div class="status-dot" id="status-main_building"></div>
+                        <span id="status-text-main_building">OFFLINE</span>
+                    </div>
+                </div>
+                <div class="pressure-gauge">
+    <div class="pressure-gauge-title">LIVE PRESSURE</div>
+
+    <div class="gauge">
+        <div class="gauge-arc"></div>
+
+        <div class="gauge-ticks">
+            <div class="gauge-tick" style="transform: rotate(-90deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-67.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-45deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-22.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(0deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(22.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(45deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(67.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(90deg);"></div>
+        </div>
+
+        <div class="gauge-needle" id="needle-main_building"></div>
+
+        <div class="gauge-value">
+            <div class="gauge-value-number" id="gauge-value-main_building">0</div>
+            <div class="gauge-value-unit">PSI</div>
+        </div>
+
+    </div>
+
+    <div class="gauge-status normal" id="gauge-status-main_building">
+        NORMAL PRESSURE
+    </div>
+</div>
+                <div class="sensor-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Pressure</span>
+                        <span class="metric-value" id="pressure-main_building">-- PSI</span>
+                    </div>
+                    <div class="pressure-bar">
+                        <div class="pressure-fill" id="pressure-bar-main_building" style="width: 0%"></div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Flow Rate</span>
+                        <span class="metric-value" id="flow-main_building">-- LPM</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Gate Position</span>
+                        <span class="metric-value" id="valve-main_building">--%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pool & Spa -->
+            <div class="sensor-card" id="card-pool_spa">
+                <div class="sensor-header">
+                    <div>
+                        <div class="sensor-icon"> <i class="fa-solid fa-person-swimming fa-float" style="color: rgb(116, 192, 252);"></i> </div>
+                        <div class="sensor-title">POOL</div>
+                    </div>
+                    <div class="sensor-status">
+                        <div class="status-dot" id="status-pool_spa"></div>
+                        <span id="status-text-pool_spa">OFFLINE</span>
+                    </div>
+                </div>
+                <div class="pressure-gauge">
+    <div class="pressure-gauge-title">LIVE PRESSURE</div>
+
+    <div class="gauge">
+        <div class="gauge-arc"></div>
+
+        <div class="gauge-ticks">
+            <div class="gauge-tick" style="transform: rotate(-90deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-67.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-45deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-22.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(0deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(22.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(45deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(67.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(90deg);"></div>
+        </div>
+
+        <div class="gauge-needle" id="needle-pool_spa"></div>
+
+        <div class="gauge-value">
+            <div class="gauge-value-number" id="gauge-value-pool_spa">0</div>
+            <div class="gauge-value-unit">PSI</div>
+        </div>
+
+    </div>
+
+    <div class="gauge-status normal" id="gauge-status-pool_spa">
+        NORMAL PRESSURE
+    </div>
+</div>
+                <div class="sensor-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Pressure</span>
+                        <span class="metric-value" id="pressure-pool_spa">-- PSI</span>
+                    </div>
+                    <div class="pressure-bar">
+                        <div class="pressure-fill" id="pressure-bar-pool_spa" style="width: 0%"></div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Flow Rate</span>
+                        <span class="metric-value" id="flow-pool_spa">-- LPM</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Gate Position</span>
+                        <span class="metric-value" id="valve-pool_spa">--%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitchen & Laundry -->
+            <div class="sensor-card" id="card-kitchen">
+                <div class="sensor-header">
+                    <div>
+                        <div class="sensor-icon"> <i class="fa-solid fa-mug-saucer fa-float" style="color: rgb(227, 31, 31);"></i> </div>
+                        <div class="sensor-title">CAFÉ & BEVERAGE</div>
+                    </div>
+                    <div class="sensor-status">
+                        <div class="status-dot" id="status-kitchen"></div>
+                        <span id="status-text-kitchen">OFFLINE</span>
+                    </div>
+                </div>
+<div class="pressure-gauge">
+    <div class="pressure-gauge-title">LIVE PRESSURE</div>
+
+    <div class="gauge">
+        <div class="gauge-arc"></div>
+
+        <div class="gauge-ticks">
+            <div class="gauge-tick" style="transform: rotate(-90deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-67.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-45deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(-22.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(0deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(22.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(45deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(67.5deg);"></div>
+            <div class="gauge-tick" style="transform: rotate(90deg);"></div>
+        </div>
+
+        <div class="gauge-needle" id="needle-kitchen"></div>
+
+        <div class="gauge-value">
+            <div class="gauge-value-number" id="gauge-value-kitchen">0</div>
+            <div class="gauge-value-unit">PSI</div>
+        </div>
+
+ 
+    </div>
+
+    <div class="gauge-status normal" id="gauge-status-kitchen">
+        NORMAL PRESSURE
+    </div>
+</div>
+
+                <div class="sensor-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Pressure</span>
+                        <span class="metric-value" id="pressure-kitchen">-- PSI</span>
+                    </div>
+                    <div class="pressure-bar">
+                        <div class="pressure-fill" id="pressure-bar-kitchen" style="width: 0%"></div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Flow Rate</span>
+                        <span class="metric-value" id="flow-kitchen">-- LPM</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Gate Position</span>
+                        <span class="metric-value" id="valve-kitchen">--%</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="security-section">
+            <!-- Security Status -->
+            <div class="security-card">
+                <div class="security-header security-normal" id="security-header">
+                    <span><i class="fa-solid fa-shield-heart fa-beat-slow"></i></span>
+                    <span>SECURITY STATUS</span>
+                </div>
+                <div class="security-status-text" id="security-status">
+                    All systems operating normally. HMAC + timestamp + sequence verification active.
+                </div>
+                <div class="security-status-text">
+                    Last security check: <span id="last-check">--:--:--</span>
+                </div>
+
+                <div class="attack-alert" id="attack-alert">
+                    <div class="attack-header">
+                        <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+                        <span>ATTACK DETECTED</span>
+                    </div>
+                    <div class="attack-details">
+                        <span><strong>Type:</strong> <span id="attack-type">--</span></span>
+                        <span><strong>Source:</strong> <span id="attack-source">--</span></span>
+                        <span><strong>Target:</strong> <span id="attack-target">--</span></span>
+                    </div>
+                    <div class="attack-status">
+                       <i class="fa-solid fa-circle-check"></i> BLOCKED BY SECURITY SYSTEM
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Log -->
+            <div class="security-card">
+                <div class="security-header">
+                    <span><i class="fa-solid fa-clock-rotate-left fa-spin fa-spin-reverse" style="color: rgb(111, 54, 138);"></i></span>
+                    <span>SECURITY EVENT LOG</span>
+                </div>
+                <div class="event-log" id="event-log">
+                    <div class="event-item">
+                        <span class="event-icon"><i class="fa-solid fa-clock-rotate-left fa-spin fa-spin-reverse" style="color: rgb(111, 54, 138);"></i></span>
+                        <span class="event-time">--:--:--</span>
+                        <span class="event-message">Waiting for events...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Footer -->
+        <div class="stats-footer">
+            <div class="stat-item">
+                <div class="stat-value green" id="stat-valid">0</div>
+                <div class="stat-label">Valid Messages</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value red" id="stat-rejected">0</div>
+                <div class="stat-label">Attacks Blocked</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value cyan" id="stat-total">0</div>
+                <div class="stat-label">Total Processed</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // Dashboard state
+        // =============================================
+        const state = {
+            valid: 0,
+            rejected: 0,
+            total: 0,
+            zones: {
+                main_building: { online: false, lastSeen: null },
+                pool_spa:      { online: false, lastSeen: null },
+                kitchen:       { online: false, lastSeen: null }
+            },
+            events: []
+        };
+
+        // =============================================
+        // WebSocket connection
+        // =============================================
+        let ws = null;
+        let reconnectAttempts = 0;
+        const maxReconnectAttempts = 10;
+
+        function connectWebSocket() {
+            addEvent('valid', 'Connecting to monitoring system...');
+
+            try {
+                ws = new WebSocket('ws://localhost:8765');
+            } catch (e) {
+                addEvent('attack', 'WebSocket creation failed: ' + e.message);
+                return;
+            }
+
+            ws.onopen = () => {
+                reconnectAttempts = 0;
+                addEvent('valid', 'Connected to security monitoring system');
+                document.querySelector('.live-dot').style.background = 'var(--accent-green)';
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    handleMessage(message);
+                } catch (e) {
+                    console.error('Parse error:', e);
+                }
+            };
+
+            ws.onclose = () => {
+                document.querySelector('.live-dot').style.background = 'var(--accent-red)';
+                if (reconnectAttempts < maxReconnectAttempts) {
+                    reconnectAttempts++;
+                    addEvent('attack', 'Disconnected. Retry ' + reconnectAttempts + '/' + maxReconnectAttempts + '...');
+                    setTimeout(connectWebSocket, 2000);
+                } else {
+                    addEvent('attack', 'Connection failed. Is subscriber_dashboard.py running?');
+                }
+            };
+
+            ws.onerror = () => {};
+        }
+
+        // =============================================
+        // Message handlers
+        // =============================================
+        function handleMessage(message) {
+            switch (message.type) {
+                case 'valid_message':
+                    handleValidMessage(message.data);
+                    break;
+                case 'attack':
+                case 'rejected_message':
+                    handleAttack(message.data);
+                    break;
+                case 'stats_update':
+                    updateStats(message.data);
+                    break;
+            }
+        }
+
+        function handleValidMessage(data) {
+            state.valid++;
+            state.total++;
+
+            // Determine zone
+            let zone = 'main_building';
+            if (data.zone) {
+                zone = data.zone;
+            } else if (data.topic) {
+                if (data.topic.includes('pool'))    zone = 'pool_spa';
+                else if (data.topic.includes('kitchen')) zone = 'kitchen';
+            }
+
+            state.zones[zone].online = true;
+            state.zones[zone].lastSeen = new Date();
+
+            updateZoneCard(zone, data);
+            updateStatsDisplay();
+
+            const zoneName = getZoneName(zone);
+            addEvent('valid', zoneName + ': pressure=' + (data.pressure_psi || '--') + ' PSI, flow=' + (data.flow_rate_gpm || '--') + ' LPM');
+        }
+
+        function handleAttack(data) {
+            state.rejected++;
+            state.total++;
+
+            showAttackAlert(data);
+
+            // Shake the first zone card as visual feedback
+            const card = document.getElementById('card-main_building');
+            if (card) {
+                card.classList.add('attack-active');
+                setTimeout(() => card.classList.remove('attack-active'), 3000);
+            }
+
+            updateStatsDisplay();
+            addEvent('attack', 'BLOCKED: ' + (data.attack_type || data.reasons?.join(', ') || 'Unknown attack') + ' from ' + (data.source || 'unknown'));
+        }
+
+        function showAttackAlert(data) {
+            const alert = document.getElementById('attack-alert');
+            const header = document.getElementById('security-header');
+            const status = document.getElementById('security-status');
+
+            document.getElementById('attack-type').textContent   = data.attack_type || data.reasons?.join(', ') || 'Security Violation';
+            document.getElementById('attack-source').textContent = data.source || data.device_id || 'unknown';
+            document.getElementById('attack-target').textContent = 'Water System';
+
+            alert.classList.add('visible');
+            header.classList.remove('security-normal');
+            header.classList.add('security-alert');
+            header.innerHTML = '<span> <i class="fa-solid fa-triangle-exclamation"></i> </span> <span>SECURITY ALERT</span>';
+            status.textContent = 'Attack detected and blocked by HMAC + sequence + timestamp verification!';
+
+            setTimeout(() => {
+                alert.classList.remove('visible');
+                header.classList.remove('security-alert');
+                header.classList.add('security-normal');
+                header.innerHTML = '<span> <i class="fa-solid fa-shield-heart fa-beat-slow"></i> </span> <span>SECURITY STATUS</span>';
+                status.textContent = 'All systems operating normally. HMAC + timestamp + sequence verification active.';
+            }, 5000);
+        }
+function updatePressureGauge(zone, pressure) {
+    const value = Math.max(0, Math.min(80, Number(pressure) || 0));
+
+    const needle = document.getElementById('needle-' + zone);
+    const valueDisplay = document.getElementById('gauge-value-' + zone);
+    const statusDisplay = document.getElementById('gauge-status-' + zone);
+
+    if (!needle || !valueDisplay || !statusDisplay) {
+        return;
+    }
+
+    /*
+     * Gauge range:
+     * 0 PSI  = -90 degrees
+     * 80 PSI =  90 degrees
+     */
+    const angle = -90 + (value / 80) * 180;
+
+    needle.style.transform =
+        `translateX(-50%) rotate(${angle}deg)`;
+
+    valueDisplay.textContent = value.toFixed(1);
+
+    statusDisplay.classList.remove('low', 'normal', 'high');
+
+    if (value < 30) {
+        statusDisplay.textContent = 'LOW PRESSURE';
+        statusDisplay.classList.add('low');
+    } else if (value < 65) {
+        statusDisplay.textContent = 'NORMAL PRESSURE';
+        statusDisplay.classList.add('normal');
+    } else {
+        statusDisplay.textContent = 'HIGH PRESSURE';
+        statusDisplay.classList.add('high');
+    }
+}
+        function updateZoneCard(zone, data) {
+        
+    const card = document.getElementById('card-' + zone);
+
+        if (card) {
+            card.classList.add('updating');
+            setTimeout(() => card.classList.remove('updating'), 300);
+        }
+
+            const statusDot  = document.getElementById('status-' + zone);
+            const statusText = document.getElementById('status-text-' + zone);
+            if (statusDot && statusText) {
+                statusDot.classList.add('online');
+                statusText.textContent = 'ONLINE';
+            }
+
+            const pressure = data.pressure_psi || 0;
+            const flow     = data.flow_rate_gpm || 0;
+            const valve    = data.valve_position || 0;
+            updatePressureGauge(zone, pressure);
+
+            animateMetric('pressure-' + zone, pressure.toFixed(1) + ' PSI');
+            animateMetric('flow-' + zone,     flow.toFixed(1) + ' LPM');
+            animateMetric('valve-' + zone,    valve.toFixed(1) + '%');
+
+            const bar = document.getElementById('pressure-bar-' + zone);
+            if (bar) {
+                const pct = Math.min((pressure / 80) * 100, 100);
+                bar.style.width = pct + '%';
+                bar.classList.toggle('high', pressure > 65);
+            }
+        }
+
+        function animateMetric(id, value) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = value;
+                el.classList.add('updating');
+                setTimeout(() => el.classList.remove('updating'), 500);
+            }
+        }
+
+        function updateStatsDisplay() {
+            document.getElementById('stat-valid').textContent    = state.valid;
+            document.getElementById('stat-rejected').textContent = state.rejected;
+            document.getElementById('stat-total').textContent    = state.total;
+            document.getElementById('last-check').textContent    = formatTime(new Date());
+        }
+
+        function updateStats(data) {
+            state.valid    = data.valid    || 0;
+            state.rejected = data.rejected || 0;
+            state.total    = data.total    || 0;
+            updateStatsDisplay();
+        }
+
+        // =============================================
+        // Event log
+        // =============================================
+        function addEvent(type, message) {
+            const log  = document.getElementById('event-log');
+            const time = formatTime(new Date());
+            const icon = type === 'attack' ?  '<i class="fa-solid fa-triangle-exclamation"></i>' : '<i class="fa-solid fa-circle-check"></i>';
+
+            const item = document.createElement('div');
+            item.className = 'event-item ' + type;
+            item.innerHTML =
+                '<span class="event-icon">' + icon + '</span>' +
+                '<span class="event-time">' + time + '</span>' +
+                '<span class="event-message">' + message + '</span>';
+
+            if (log.firstChild) {
+                log.insertBefore(item, log.firstChild);
+            } else {
+                log.appendChild(item);
+            }
+
+            while (log.children.length > 50) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        // =============================================
+        // Helpers
+        // =============================================
+        function getZoneName(zone) {
+            const names = {
+                main_building: 'Main Building',
+                pool_spa: 'Pool & Spa',
+                kitchen: 'Café & Beverage'
+            };
+            return names[zone] || 'Unknown Zone';
+        }
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', { hour12: false });
+        }
+
+        // =============================================
+        // Init
+        // =============================================
+        function updateClock() {
+            document.getElementById('current-time').textContent = formatTime(new Date());
+        }
+
+        function init() {
+            updateClock();
+            setInterval(updateClock, 1000);
+            connectWebSocket();
+
+            setTimeout(() => {
+                const log = document.getElementById('event-log');
+                if (log.children.length === 1) {
+                    const msg = log.firstChild.querySelector('.event-message');
+                    if (msg && msg.textContent === 'Waiting for events...') {
+                        log.innerHTML = '';
+                    }
+                }
+            }, 3000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
