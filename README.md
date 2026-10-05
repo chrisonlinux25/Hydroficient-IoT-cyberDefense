@@ -59,6 +59,10 @@ This combination of real-time monitoring and remote physical control makes the s
       
 ## 📑 Capstone Presentation
 
+The final capstone presentation summarizes the 8-week IoT cybersecurity project, including the threat model, TLS/mTLS implementation, replay-attack defenses, real-time security dashboard, and AI-based anomaly detection.
+
+**[📊 View the Capstone Presentation](./IoT%20Hydroficient-Extern/Week7/Christine%20khayat-IoT%20Capstone%20Project.pptx)**
+
 ## 🛡️ Defense-in-Depth: The Complete Security Stack
 
 Each project added one independent layer of protection. No single layer is sufficient on its own — together, they provide multiple lines of defense and close different security gaps.
