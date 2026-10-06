@@ -53,7 +53,7 @@ This combination of real-time monitoring and remote physical control makes the s
 ## 🎥 Video Demos
    1. The Attack Simulation and Live Security Dashboard
       [![Security Dashboard](IoT%20Hydroficient-Extern/Week7/Capstone/CapstoneAttackAlert.png
-)](IoT%20Hydroficient-Extern/Week7/Capstone/Dashboard%20fulllook.mov)
+)](IoT%20Hydroficient-Extern/Week7/Capstone/dashboard-fullattack.mp4)
       
    2. AI Detection and Replay-Attack Dashboard
       
