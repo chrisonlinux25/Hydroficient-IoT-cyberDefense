@@ -58,7 +58,7 @@ This combination of real-time monitoring and remote physical control makes the s
    2. AI Detection and Replay-Attack Dashboard
       
    3. Live Water Security Dashboard
-      [![Security Dashboard](IoT%20Hydroficient-Extern/Week7/Capstone/CapstoneFLook.png)](IoT%20Hydroficient-Extern/Week7/Capstone/Dashboard%20fulllook.mov)
+      [![Security Dashboard](IoT%20Hydroficient-Extern/Week7/Capstone/CapstoneFLook.png)](IoT%20Hydroficient-Extern/Week7/Capstone/Dashboard%20full%20look.mov)
 
       
 ## 📑 Capstone Presentation
