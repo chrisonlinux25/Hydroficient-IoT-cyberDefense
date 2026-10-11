@@ -54,20 +54,27 @@ This combination of real-time monitoring and remote physical control makes the s
    1. The Attack Simulation and Live Security Dashboard
       [![Security Dashboard](IoT%20Hydroficient-Extern/Week7/Capstone/CapstoneAttackAlert.png
 )](IoT%20Hydroficient-Extern/Week7/Capstone/dashboard-fullattack.mp4)
+
+**[📊 View the Attack simulation](IoT%20Hydroficient-Extern/Week7/Capstone/dashboard-fullattack.mp4)**
       
    2. AI Detection and Replay-Attack Dashboard
+      [![Security Dashboard](IoT%20Hydroficient-Extern/Week8/Capstone/DashboardAIAnomaly.png)](IoT%20Hydroficient-Extern/Week8/Capstone/dashboard-ai-anomalyattack.mp4)
+
+**[📊 View the AI Detection](IoT%20Hydroficient-Extern/Week8/Capstone/dashboard-ai-anomalyattack.mp4)**
       
    3. Live Water Security Dashboard
       [![Security Dashboard](IoT%20Hydroficient-Extern/Week7/Capstone/CapstoneFLook.png)](IoT%20Hydroficient-Extern/Week7/Capstone/Dashboard%20full%20look.mov)
+
+**[📊 View the Security Dashboard](IoT%20Hydroficient-Extern/Week7/Capstone/Dashboard%20full%20look.mov)**
 
       
 ## 📑 Capstone Presentation
 
 The final capstone presentation summarizes the 8-week IoT cybersecurity project, including the threat model, TLS/mTLS implementation, replay-attack defenses, real-time security dashboard, and AI-based anomaly detection.
 
-[![Capstone Presentation](IoT%20Hydroficient-Extern/Week7/Capstone/Capstone.png)](IoT%20Hydroficient-Extern/Week7/Capstone/Christine%20Khayat-IoT%20Capstone%20Project.pptx)
+[![Capstone Presentation](IoT%20Hydroficient-Extern/Week7/Capstone/Capstone.png)](IoT%20Hydroficient-Extern/Week8/Capstone/Christine%20Khayat-IoT%20Capstone%20Project.pptx)
 
-**[📊 View the Capstone Presentation](IoT%20Hydroficient-Extern/Week7/Capstone/Christine%20Khayat-IoT%20Capstone%20Project.pptx)**
+**[📊 View the Capstone Presentation](IoT%20Hydroficient-Extern/Week8/Capstone/Christine%20Khayat-IoT%20Capstone%20Project.pptx)**
 
 ## 🛡️ Defense-in-Depth: The Complete Security Stack
 
@@ -83,9 +90,6 @@ Each project added one independent layer of protection. No single layer is suffi
 | **HMAC Message Signing** | 6 | Tampered message content |
 | **Live Dashboard Monitoring** | 7 | Slow human detection and response |
 | **AI Anomaly Detection (Isolation Forest)** | 8 | Gradual drift and abnormal patterns that bypass rule-based defenses |
-
-
-## 📁 Folder Structure
 
 
 ## 🧩 Project-by-Project Breakdown
