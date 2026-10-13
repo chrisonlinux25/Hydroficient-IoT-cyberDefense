@@ -1,5 +1,5 @@
 # Hydroficient-IoT-cyberDefense
-IoT Cybersecurity; Building IoT water defense Pipeline.
+Hands-on IoT Cyber Defense externship focused on IoT security, threat modeling, secure communication protocols, device authentication, attack mitigation, and AI-powered anomaly detection using the Hydroficient smart water system case study.
 
 # An 8-Week IoT Security Externship — Securing the Grand Marina Hotel's Water Infrastructure
 
